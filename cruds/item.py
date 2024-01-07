@@ -8,24 +8,24 @@ def find_all(db: Session):
     return db.query(Item).all()
 
 
-def find_by_id(db: Session, id: int):
-    return db.query(Item).filter(Item.id == id).first()
+def find_by_id(db: Session, id: int, user_id: int):
+    return db.query(Item).filter(Item.id == id).filter(Item.user_id == user_id).first()
 
 
 def find_by_name(db: Session, name: str):
     return db.query(Item).filter(Item.name.like(f"%{name}%")).all()
 
 
-def create(db: Session, item_create: ItemCreate):
-    new_item = Item(**item_create.model_dump())
+def create(db: Session, item_create: ItemCreate, user_id: int):
+    new_item = Item(**item_create.model_dump(), user_id=user_id)
     db.add(new_item)
     db.commit()
 
     return new_item
 
 
-def update(db: Session, id: int, item_update: ItemUpdate):
-    item = find_by_id(db, id)
+def update(db: Session, id: int, item_update: ItemUpdate, user_id: int):
+    item = find_by_id(db, id, user_id)
     if item is None:
         return None
 
@@ -40,8 +40,8 @@ def update(db: Session, id: int, item_update: ItemUpdate):
     return item
 
 
-def delete(db: Session, id: int):
-    item = find_by_id(db, id)
+def delete(db: Session, id: int, user_id: int):
+    item = find_by_id(db, id, user_id)
     if item is None:
         return None
 
