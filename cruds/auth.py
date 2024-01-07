@@ -11,10 +11,11 @@ from fastapi.security import OAuth2PasswordBearer
 
 from schemas import UserCreate, DecodedToken
 from models import User
+from config import get_settings
 
 
 ALGORITHM = 'HS256'
-SECRET_KEY = 'ca8b731c180391fd33ab6ac59636b349521c079bb35d5e82015cbca08a5ad3e3'
+SECRET_KEY = get_settings().secret_key
 
 oauth2_schema = OAuth2PasswordBearer(tokenUrl='/auth/login')
 
