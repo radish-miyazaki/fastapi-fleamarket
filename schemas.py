@@ -1,7 +1,8 @@
+from datetime import datetime
 from enum import Enum
 from typing import Optional
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 
 
 class ItemStatus(Enum):
@@ -28,3 +29,7 @@ class ItemResponse(BaseModel):
     price: int = Field(gt=0, examples=[100000])
     description: Optional[str] = Field(None, examples=['美品です'])
     status: ItemStatus = Field(examples=[ItemStatus.ON_SALE])
+    created_at: datetime
+    updated_at: datetime
+
+    model_config = ConfigDict(from_attributes=True)
